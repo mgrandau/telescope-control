@@ -1,0 +1,3 @@
+[submodule "pyasi"]
+	path = pyasi
+	url = https://github.com/j0r1/pyasi.git
