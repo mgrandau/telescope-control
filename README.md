@@ -14,9 +14,9 @@ I'm not really concerned on a physically aligning the camera to what the telesco
 
 ## Running the prototype
 
-I've prototyped the code and its useage in finder-camera.ipynb
+I've prototyped the code and its usage in finder-camera.ipynb
 
 ## Dependencies
 
 * [ASICamera2 SDK](https://download.astronomy-imaging-camera.com/download/asi-camera-sdk-linux-mac/?wpdmdl=381) - Linux SDK
-* [pyasi](https://github.com/j0r1/pyasi) - This is a Python wrapper around some ASI SDK functions.
+* [pyasi](https://github.com/j0r1/pyasi) - a [Cython](https://cython.org/) wrapper around some ASI SDK. This should allow direct calls from python.
