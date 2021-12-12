@@ -19,13 +19,13 @@ This approach of overlays may be useful in laying out custom markers. For exampl
 
 I looked for a solid mounting place. I wanted it to be stable, so not to play with allignment constantly. I also wanted to be able to fix the rotation of the camera. 
 
-My solution? I use a Telarad for eye sighting. It has a 3 inch extension. The extension are fins that form a stable beam structure. My approach is to a 1/4-20 x 1 1/2 bolt with a few washers and a nut. The nut goes on first with the washers sandwiching the fins of the telerad support. The camera and nut provide for a tight fit that should not move.
+My solution? I use a Telarad for eye sighting. It has a 3 inch extension. The extension are fins that form a stable beam structure. My approach is to use a 1/4-20 x 1 1/2 bolt (standard tripod threading) with a few washers and a nut. The nut goes on first with the washers and camera sandwiching the fins of the telerad support. The camera and nut provide for a tight fit that should not move. The tape is just to limit camera rotation.
 
-Image to follow....
+<image src="finder-camera-mount.jpg" height=400>
 
 ## Using the ASI120MC-S
 
-I'm not really concerned on a physically aligning the camera to what the telescope sees. It should be firmly mounted. The software will allow for configuration to position the targeting cross-hairs.
+I'm not really concerned on a physically aligning the camera to what the telescope sees. It should be firmly mounted. The software will allow for configuration to position the targeting cross-hairs, tellerad circles or whatever the overlay is depicting.
 
 ## Running the prototype
 
