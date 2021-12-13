@@ -1,6 +1,10 @@
 import asi
 import cv2
 from typing import Optional
+import uvicorn
+from fastapi import FastAPI
+from fastapi.responses import StreamingResponse
+import threading
 
 class VideoCamera(object):
     _video = None
@@ -36,15 +40,11 @@ class VideoCamera(object):
         ret, jpeg = cv2.imencode('.jpg', added_image)
         return jpeg.tobytes()
 
-import uvicorn
-from fastapi import FastAPI
-from fastapi.responses import StreamingResponse
-import threading
 
 app = FastAPI()
 
 def run():
-    uvicorn.run(app)
+    uvicorn.run(app, host="0.0.0.0", port=80)
       
 def start_api():
     _api_thread = threading.Thread(target=run)
