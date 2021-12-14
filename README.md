@@ -21,7 +21,7 @@ I looked for a solid mounting place. I wanted it to be stable, so not to play wi
 
 My solution? I use a Telarad for eye sighting. It has a 3 inch extension. The extension are fins that form a stable beam structure. My approach is to use a 1/4-20 x 1 1/2 bolt (standard tripod threading) with a few washers and a nut. The nut goes on first with the washers and camera sandwiching the fins of the telerad support. The camera and nut provide for a tight fit that should not move. The tape is just to limit camera rotation.
 
-<image src="finder-camera-mount.jpg" height=400>
+<image src="doc_images/finder-camera-mount.jpg" height=400>
 
 ## Using the ASI120MC-S
 

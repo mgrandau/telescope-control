@@ -26,7 +26,7 @@ class VideoCamera(object):
         b,g,r = cv2.split(self.last_image)
         corrected_image = cv2.merge ( (r, g, b) )
 
-        overlay = cv2.imread('overlays/telerad-overlay.png')
+        overlay = cv2.imread('overlays/telrad-overlay.png')
         
         added_image = cv2.addWeighted(corrected_image,1,overlay,1,0,dtype = cv2.CV_32F)
         
