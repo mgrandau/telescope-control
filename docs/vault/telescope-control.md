@@ -1,18 +1,18 @@
 ---
 id: 5VR0zwmW01KjZYdl5OYZd
-title: telescope-control
-desc: ''
-updated: 1640538856102
+title: Telescope Control
+desc: Project description
+updated: 1640543572518
 created: 1640538424351
 ---
 
-This project creates a service that will control the telescope remotely.
+This project creates a service that will control the telescope remotely. The telescope is a large [[dobsonian reflector|telescope-control.telescope]].
 
 Components under control:
 * [ZWO ASI120MC-S (color) camera](https://astronomy-imaging-camera.com/product/asi120mc-s) with [ZWO 1/3" 2.1mm 150 degree lens](https://astronomy-imaging-camera.com/product/zwo-13-2-1mm-150-degree-lens) as a finder scope.
 * [ZWO ASI482MC camera](https://astronomy-imaging-camera.com/product/asi482mc) as the main telescope imaging camera
-* [StepperOnline Nema 17 High Temp Stepper Motor 13Ncm/18.4oz.in Insulation Class H 180C](https://www.omc-stepperonline.com/nema-17-high-temp-stepper-motor-13ncm-18-4oz-in-insulation-class-h-180c.html) controlling telescope heading.
-* [StepperOnline Nema 17 High Temp Stepper Motor 13Ncm/18.4oz.in Insulation Class H 180C](https://www.omc-stepperonline.com/nema-17-high-temp-stepper-motor-13ncm-18-4oz-in-insulation-class-h-180c.html) controlling telescope azimuth angle.
+* [StepperOnline Nema 23 Bipolar 1.8deg 2.4Nm (340oz.in) 1.8A 4.95V 57x57x104mm 4 Wires](https://www.omc-stepperonline.com/nema-23-stepper-motor/nema-23-bipolar-1-8deg-2-4nm-340oz-in-1-8a-4-95v-57x57x104mm-4-wires.html?mfp=146-rated-current-a%5B1.8%5D) controlling telescope heading.
+* [StepperOnline Nema 17 Bipolar 1.8deg 65Ncm (92oz.in) 2.1A 3.36V 42x42x60mm 4 Wires](https://www.omc-stepperonline.com/nema-17-stepper-motor/nema-17-bipolar-1-8deg-65ncm-92oz-in-2-1a-3-36v-42x42x60mm-4-wires-it.html?mfp=146-rated-current-a%5B2.10%2C2.1%5D) controlling telescope azimuth angle.
 
 Telescope Control GUI:
 
