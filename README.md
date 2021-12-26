@@ -2,13 +2,13 @@
 id: 5VR0zwmW01KjZYdl5OYZd
 title: Telescope Control
 desc: Project description
-updated: 1640545120110
+updated: 1640545587698
 created: 1640538424351
 ---
 
 This project creates a service that will control the telescope remotely. The telescope is a large [[dobsonian reflector | telescope-control.telescope]].
 
-The telescope is a large [dobsonian reflector] (telescope-control.telescope.md).
+The telescope is a large [dobsonian reflector](./telescope-control.telescope.md).
 
 Components under control:
 * [ZWO ASI120MC-S (color) camera](https://astronomy-imaging-camera.com/product/asi120mc-s) with [ZWO 1/3" 2.1mm 150 degree lens](https://astronomy-imaging-camera.com/product/zwo-13-2-1mm-150-degree-lens) as a finder scope.
