@@ -2,7 +2,7 @@
 id: bNW028pts5om1BWgD0kIp
 title: Telescope
 desc: 'Specifications of the telescope'
-updated: 1640543934725
+updated: 1640546746847
 created: 1640540297372
 ---
 
