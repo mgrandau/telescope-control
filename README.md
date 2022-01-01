@@ -1,15 +1,9 @@
----
-id: 5VR0zwmW01KjZYdl5OYZd
-title: Telescope Control
-desc: Project description
-updated: 1640546822369
-created: 1640538424351
----
+# Telescope-Control
 
 This project creates a service that will control the telescope remotely.
 
 For VSCODE:
-The telescope is a large dobsonian reflector ![[telescope-control.telescope]].
+The telescope is a large dobsonian reflector [[telescope-control.telescope]].
  
 For GitHub:
 The telescope is a large [dobsonian reflector](./docs/vault/telescope-control.telescope.md).
