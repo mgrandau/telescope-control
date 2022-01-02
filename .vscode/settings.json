@@ -1,8 +1,10 @@
 {
     "cSpell.words": [
+        "astropy",
         "Cython",
         "dobsonian",
-        "Nema"
+        "Nema",
+        "pytz"
     ],
     "dendron.rootDir": ".",
     "files.autoSave": "onFocusChange",
