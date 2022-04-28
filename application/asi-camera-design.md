@@ -4,28 +4,58 @@
 classDiagram
   direction TB
 
-  ICamera <|-- ZwoAsiCamera
+  IImageAcquisitionBehavior <|-- ZwoAsiCamera
 
   ZwoAsiCamera "1" --> "*" IPostProcessingBehavior
+  ZwoAsiCamera "1" --> "1" ZwoAsiCameraDataRepository
+  ZwoAsiCamera "1" --> "1" IImageAcquisitionBehaviorLogger
 
+  IPostProcessingBehavior <|-- SaveDark
+  SaveDark "1" --> "1" LastImageAsFits : _storage_format
+  IPostProcessingBehavior <|-- SaveBias
+  SaveBias "1" --> "1" LastImageAsFits : _storage_format
+  IPostProcessingBehavior <|-- SaveFlat
+  SaveFlat "1" --> "1" LastImageAsFits : _storage_format
   IPostProcessingBehavior <|-- StoreInDataLake
   StoreInDataLake "1" --> "1" LastImageAsFits : _storage_format
   IPostProcessingBehavior <|-- LastImageAsFits
   IPostProcessingBehavior <|-- ApplyOverlay
+  IPostProcessingBehavior <|-- CorrectImage
 
-  class ICamera{
+  class IImageAcquisitionBehavior{
     + bytes get_processed_frame_as_jpg()
   }
 
-  class ZwoAsiCamera {
+  class IImageAcquisitionBehaviorLogger{
+    + void log_frame_acquisition(info: string)
+    + void log_frame_acquisition_wait(info: string)
+    + void log_post_processor_run(info: string)
+  }
+
+  class ZwoAsiCameraDataRepository{
+    - _configuration:Dir~str,Any~
     - _automatically_run_post_processing_behaviors : List~IPostProcessingBehavior~
+    - _logger : IImageAcquisitionBehaviorLogger
     - _last_image: cv2.Mat
 
-    + ZwoAsiCamera(configuration:Dir~str,Any~, automatically_run_post_processing_behaviors : List~IPostProcessingBehavior~)
+    + ZwoAsiCameraDataRepository(configuration:Dir~str,Any~, automatically_run_post_processing_behaviors : List~IPostProcessingBehavior~, logger: IImageAcquisitionBehaviorLogger)
+
+    + List~IPostProcessingBehavior~ get_automatically_run_post_processing_behaviors()
+    + IImageAcquisitionBehaviorLogger get_logger()
+    + cv2.Mat get_last_image()
+    + directory current_state()
+    + directory default_configuration()
+  }
+
+  class ZwoAsiCamera {
+    - _repository: ZwoAsiCameraDataRepository
+
+    + ZwoAsiCamera(configuration:Dir~str,Any~, automatically_run_post_processing_behaviors : List~IPostProcessingBehavior~, logger: IImageAcquisitionBehaviorLogger)
 
     + dir current_state()
     + dir default_configuration()
 
+    + void create_correction_filter()
     + bytes get_processed_frame_as_jpg()
   }
 
