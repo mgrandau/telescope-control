@@ -197,7 +197,9 @@ sequenceDiagram
   App->>ZwoAsiCamera: ZwoAsiCamera(configuration:Dir<str,Any>, automatically_run_post_processing_behaviors : List<IPostProcessingBehavior>)
 
   loop get frames from camera
+    
     App->>ZwoAsiCamera: get_processed_frame_as_jpg()
+
     alt if time to get new frame based on specified framerate
       ZwoAsiCamera->>ZwoAsiCamera: acquire frame from ZWO ASI Camera API
       loop through automatic post processing
@@ -214,5 +216,4 @@ sequenceDiagram
     end
 
   end
-
 ```
