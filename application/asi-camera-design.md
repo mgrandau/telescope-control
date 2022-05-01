@@ -1,5 +1,7 @@
 # ZwoAsiCamera
 
+Class structure directly associated with the ZWO ASI Camera.
+
 ```mermaid
 classDiagram
   direction TB
@@ -10,17 +12,6 @@ classDiagram
   ZwoAsiCamera "1" --> "1" ZwoAsiCameraDataRepository
   ZwoAsiCamera "1" --> "1" IImageAcquisitionBehaviorLogger
 
-  IPostProcessingBehavior <|-- SaveDark
-  SaveDark "1" --> "1" LastImageAsFits : _storage_format
-  IPostProcessingBehavior <|-- SaveBias
-  SaveBias "1" --> "1" LastImageAsFits : _storage_format
-  IPostProcessingBehavior <|-- SaveFlat
-  SaveFlat "1" --> "1" LastImageAsFits : _storage_format
-  IPostProcessingBehavior <|-- StoreInDataLake
-  StoreInDataLake "1" --> "1" LastImageAsFits : _storage_format
-  IPostProcessingBehavior <|-- LastImageAsFits
-  IPostProcessingBehavior <|-- ApplyOverlay
-  IPostProcessingBehavior <|-- CorrectImage
 
   class IImageAcquisitionBehavior{
     + bytes get_processed_frame_as_jpg()
@@ -62,6 +53,49 @@ classDiagram
   class IPostProcessingBehavior{
     + cv2.Mat process_image(image : cv2.Mat)
   }
+```
+
+Classes associated with the ZWO ASI Camera that can be used to optionally extend the functionality of the ZWO ASI Camera.
+
+```mermaid
+classDiagram
+  direction TB
+
+  IImageAcquisitionBehavior <|-- ZwoAsiCamera
+
+  ZwoAsiCamera "1" --> "*" IPostProcessingBehavior
+
+  IPostProcessingBehavior <|-- SaveDark
+  SaveDark "1" --> "1" LastImageAsFits : _storage_format
+  IPostProcessingBehavior <|-- SaveBias
+  SaveBias "1" --> "1" LastImageAsFits : _storage_format
+  IPostProcessingBehavior <|-- SaveFlat
+  SaveFlat "1" --> "1" LastImageAsFits : _storage_format
+  IPostProcessingBehavior <|-- StoreInDataLake
+  StoreInDataLake "1" --> "1" LastImageAsFits : _storage_format
+  IPostProcessingBehavior <|-- LastImageAsFits
+  IPostProcessingBehavior <|-- ApplyOverlay
+  IPostProcessingBehavior <|-- CorrectImage
+
+  class IImageAcquisitionBehavior{
+    + bytes get_processed_frame_as_jpg()
+  }
+
+  class ZwoAsiCamera {
+    - _repository: ZwoAsiCameraDataRepository
+
+    + ZwoAsiCamera(configuration:Dir~str,Any~, automatically_run_post_processing_behaviors : List~IPostProcessingBehavior~, logger: IImageAcquisitionBehaviorLogger)
+
+    + dir current_state()
+    + dir default_configuration()
+
+    + void create_correction_filter()
+    + bytes get_processed_frame_as_jpg()
+  }
+
+  class IPostProcessingBehavior{
+    + cv2.Mat process_image(image : cv2.Mat)
+  }
 
   class ApplyOverlay{
     + cv2.Mat process_image(image : cv2.Mat)
@@ -72,6 +106,18 @@ classDiagram
   }
 
   class LastImageAsFits{
+    + cv2.Mat process_image(image : cv2.Mat)
+  }
+
+  class SaveDark{
+    + cv2.Mat process_image(image : cv2.Mat)
+  }
+
+  class SaveBias{
+    + cv2.Mat process_image(image : cv2.Mat)
+  }
+
+  class SaveFlat{
     + cv2.Mat process_image(image : cv2.Mat)
   }
 ```
@@ -86,7 +132,7 @@ sequenceDiagram
   participant ZwoAsiCamera
   participant PostProcessingBehaviors
 
-  App->>PostProcessingBehaviors: Create List<IPostProcessingBehavior> of automatically run image processing behaviors the camera should run.
+  App->>PostProcessingBehaviors: Create List<IPostProcessingBehavior> of automatically run image processing behaviors the camera should run
 
   App->>ZwoAsiCamera: ZwoAsiCamera(configuration:Dir<str,Any>, automatically_run_post_processing_behaviors : List<IPostProcessingBehavior>)
 
@@ -103,24 +149,21 @@ A configuration based approach assumes that settings are not directly modified b
 sequenceDiagram
   participant App
   participant List_of_Automatically_Run_PostProcessingBehaviors
-  participant Dictionary_of_User_Run_PostProcessingBehaviors
   participant New_Camera
   participant Current_Running_Camera
 
-  App->>List_of_Automatically_Run_PostProcessingBehaviors: Initialize list of automatically run image processing behaviors the camera should have.
-  App->>Dictionary_of_User_Run_PostProcessingBehaviors: Initialize Name-Value pairs of image processing behaviors the camera will make available to the user.
-  App->>New_Camera: Create the camera type specific behavior passing in the post processing behaviors, both automatic and on-demand from the user.
-  App->>New_Camera: initialize()
-
   loop video_stream
-    Current_Running_Camera->>Current_Running_Camera: get_processed_frame_as_jpg()
-    App->>Current_Running_Camera: stop_video_stream()
+    App->>Current_Running_Camera:get_processed_frame_as_jpg()
   end
 
-  App->>New_Camera: start_video_stream()
+  App->>List_of_Automatically_Run_PostProcessingBehaviors: Initialize list of automatically run image processing behaviors the camera should have
+  App->>New_Camera: ZwoAsiCamera(configuration:Dir<str,Any>, automatically_run_post_processing_behaviors : List<IPostProcessingBehavior>)
+
   loop video_stream
-    New_Camera->>New_Camera: get_processed_frame_as_jpg()
+    App->>New_Camera: get_processed_frame_as_jpg()
   end
+
+  App->>Current_Running_Camera: delete or cache for future use
 ```
 
 It is then up to the application to decide to release what was the currently running camera or hold it for later use.
@@ -147,26 +190,29 @@ The camera will have a last image object that changes only after the entire proc
 ```mermaid
 sequenceDiagram
   participant App
-  participant Current_Running_Camera
-  participant Video_Stream_Thread
+  participant ZwoAsiCamera
   participant AutomaticPostProcessingBehavior
 
-  App->>Current_Running_Camera: start_video_stream()
-  Current_Running_Camera ->> Video_Stream_Thread: create video stream thread
+  App->>List_of_Automatically_Run_PostProcessingBehaviors: Initialize list of automatically run image processing behaviors the camera should have
+  App->>ZwoAsiCamera: ZwoAsiCamera(configuration:Dir<str,Any>, automatically_run_post_processing_behaviors : List<IPostProcessingBehavior>)
+
   loop get frames from camera
+    App->>ZwoAsiCamera: get_processed_frame_as_jpg()
     alt if time to get new frame based on specified framerate
-      Video_Stream_Thread->>Video_Stream_Thread: get_processed_frame_as_jpg()
+      ZwoAsiCamera->>ZwoAsiCamera: acquire frame from ZWO ASI Camera API
       loop through automatic post processing
-        Video_Stream_Thread->>AutomaticPostProcessingBehavior: process(_last_image)
-        AutomaticPostProcessingBehavior-->>Video_Stream_Thread: update _last_image
+        ZwoAsiCamera->>List_of_Automatically_Run_PostProcessingBehaviors: get next post processing behavior
+
+        List_of_Automatically_Run_PostProcessingBehaviors-->>ZwoAsiCamera: return post processing behavior
+        
+        ZwoAsiCamera->>AutomaticPostProcessingBehavior: process_image(_last_image)
+        
+        AutomaticPostProcessingBehavior-->>ZwoAsiCamera: update _last_image
       end
     else else
-      Video_Stream_Thread->>Video_Stream_Thread: sleep for remainder of time
+      ZwoAsiCamera->>ZwoAsiCamera: sleep for remainder of time
     end
 
-    Video_Stream_Thread-->>Current_Running_Camera: update _last_image
   end
 
-  App->>Current_Running_Camera: stop_video_stream()
-  Current_Running_Camera ->> Video_Stream_Thread: kill thread
 ```
