@@ -3,8 +3,11 @@
         "astropy",
         "Cython",
         "dobsonian",
+        "imencode",
+        "imread",
         "Nema",
-        "pytz"
+        "pytz",
+        "tobytes"
     ],
     "dendron.rootDir": ".",
     "files.autoSave": "onFocusChange",

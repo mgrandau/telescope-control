@@ -24,29 +24,25 @@ classDiagram
   }
 
   class ZwoAsiCameraDataRepository{
-    - _configuration:Dir~str,Any~
-    - _automatically_run_post_processing_behaviors : List~IPostProcessingBehavior~
-    - _logger : IImageAcquisitionBehaviorLogger
-    - _last_image: cv2.Mat
+    - _configuration:Dict~str,Any~
 
-    + ZwoAsiCameraDataRepository(configuration:Dir~str,Any~, automatically_run_post_processing_behaviors : List~IPostProcessingBehavior~, logger: IImageAcquisitionBehaviorLogger)
+    + ZwoAsiCameraDataRepository(configuration:Dict~str,Any~)
 
-    + List~IPostProcessingBehavior~ get_automatically_run_post_processing_behaviors()
-    + IImageAcquisitionBehaviorLogger get_logger()
-    + cv2.Mat get_last_image()
-    + directory current_state()
-    + directory default_configuration()
+    + Dict< str, Any > current_state()
+    + Dict< str, Any > default_configuration()
   }
 
   class ZwoAsiCamera {
     - _repository: ZwoAsiCameraDataRepository
+    - _automatically_run_post_processing_behaviors : List~IPostProcessingBehavior~
+    - _logger : IImageAcquisitionBehaviorLogger
+    - _last_image: cv2.Mat
 
-    + ZwoAsiCamera(configuration:Dir~str,Any~, automatically_run_post_processing_behaviors : List~IPostProcessingBehavior~, logger: IImageAcquisitionBehaviorLogger)
+    + ZwoAsiCamera(configuration:Dict~str,Any~, automatically_run_post_processing_behaviors : List~IPostProcessingBehavior~, logger: IImageAcquisitionBehaviorLogger)
 
-    + dir current_state()
-    + dir default_configuration()
+    + Dict< str, Any > current_state()
+    + Dict< str, Any > default_configuration()
 
-    + void create_correction_filter()
     + bytes get_processed_frame_as_jpg()
   }
 
@@ -83,13 +79,15 @@ classDiagram
 
   class ZwoAsiCamera {
     - _repository: ZwoAsiCameraDataRepository
+    - _automatically_run_post_processing_behaviors : List~IPostProcessingBehavior~
+    - _logger : IImageAcquisitionBehaviorLogger
+    - _last_image: cv2.Mat
+    
+    + ZwoAsiCamera(configuration:Dict~str,Any~, automatically_run_post_processing_behaviors : List~IPostProcessingBehavior~, logger: IImageAcquisitionBehaviorLogger)
 
-    + ZwoAsiCamera(configuration:Dir~str,Any~, automatically_run_post_processing_behaviors : List~IPostProcessingBehavior~, logger: IImageAcquisitionBehaviorLogger)
+    + Dict< str, Any >  current_state()
+    + Dict< str, Any >  default_configuration()
 
-    + dir current_state()
-    + dir default_configuration()
-
-    + void create_correction_filter()
     + bytes get_processed_frame_as_jpg()
   }
 
@@ -134,7 +132,7 @@ sequenceDiagram
 
   App->>PostProcessingBehaviors: Create List<IPostProcessingBehavior> of automatically run image processing behaviors the camera should run
 
-  App->>ZwoAsiCamera: ZwoAsiCamera(configuration:Dir<str,Any>, automatically_run_post_processing_behaviors : List<IPostProcessingBehavior>)
+  App->>ZwoAsiCamera: ZwoAsiCamera(configuration:Dict<str,Any>, automatically_run_post_processing_behaviors : List<IPostProcessingBehavior>)
 
   loop video_stream
     App->>ZwoAsiCamera: get_processed_frame_as_jpg()
@@ -157,7 +155,7 @@ sequenceDiagram
   end
 
   App->>List_of_Automatically_Run_PostProcessingBehaviors: Initialize list of automatically run image processing behaviors the camera should have
-  App->>New_Camera: ZwoAsiCamera(configuration:Dir<str,Any>, automatically_run_post_processing_behaviors : List<IPostProcessingBehavior>)
+  App->>New_Camera: ZwoAsiCamera(configuration:Dict<str,Any>, automatically_run_post_processing_behaviors : List<IPostProcessingBehavior>)
 
   loop video_stream
     App->>New_Camera: get_processed_frame_as_jpg()
@@ -194,7 +192,7 @@ sequenceDiagram
   participant AutomaticPostProcessingBehavior
 
   App->>List_of_Automatically_Run_PostProcessingBehaviors: Initialize list of automatically run image processing behaviors the camera should have
-  App->>ZwoAsiCamera: ZwoAsiCamera(configuration:Dir<str,Any>, automatically_run_post_processing_behaviors : List<IPostProcessingBehavior>)
+  App->>ZwoAsiCamera: ZwoAsiCamera(configuration:Dict<str,Any>, automatically_run_post_processing_behaviors : List<IPostProcessingBehavior>)
 
   loop get frames from camera
     
