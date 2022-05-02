@@ -28,6 +28,18 @@ classDiagram
 
     + ZwoAsiCameraDataRepository(configuration:Dict~str,Any~)
 
+    + index: int read-only
+    + use_hardware:bool read-only
+    + override_filename:str read-only
+    + width: int read-only
+    + height: int read-only
+    + exposure_time: int read-only
+    + time_to_get_next_frame: int
+    + mode: str read-only
+    + gain: int read-only
+    + white_balance_red: int read-only
+    + white_balance_blue: int read-only
+
     + Dict< str, Any > current_state()
     + Dict< str, Any > default_configuration()
   }
