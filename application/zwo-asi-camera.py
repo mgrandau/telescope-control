@@ -125,12 +125,6 @@ class ZwoAsiCamera(IImageAcquisitionBehavior):
         if self._video is not None:
             del self._video
 
-    def _capture_frame_from_camera(self) -> cv2.Mat:
-        last_image, bin, success = self._video.grab(self._repository.exposure_time)
-
-        b,g,r = cv2.split(last_image)
-        return cv2.merge ( (r, g, b) )
-
     def _wait_for_next_frame(self) -> None:
         wait_time: float = (self._repository.time_to_get_next_frame - time_ns()) / 1e9
         if wait_time > 0:
@@ -138,10 +132,13 @@ class ZwoAsiCamera(IImageAcquisitionBehavior):
                 self._logger.log_frame_acquisition_wait(f"Waiting for next frame: {wait_time}")
             sleep(wait_time)
 
-    def get_processed_frame_frame_as_jpg(self) -> bytes:
+    def _capture_frame_from_camera(self) -> cv2.Mat:
+        last_image, bin, success = self._video.grab(self._repository.exposure_time)
 
-        self._wait_for_next_frame()
+        b,g,r = cv2.split(last_image)
+        return cv2.merge ( (r, g, b) )
 
+    def _get_frame(self)-> None:
         if self._repository.use_hardware:
             self._last_image = self._capture_frame_from_camera()
             if self._logger is not None:
@@ -153,6 +150,7 @@ class ZwoAsiCamera(IImageAcquisitionBehavior):
 
         self._repository.time_to_get_next_frame = time_ns() + int((1 / self._repository.fps) * 1e9)
 
+    def _run_post_processing_behaviors(self) -> None:
         for behavior in self._repository.automatically_run_post_processing_behaviors:
             if self._logger is not None:
                 self._logger.log_post_processor_run(f"Before post processor: {type(behavior)}")
@@ -161,6 +159,12 @@ class ZwoAsiCamera(IImageAcquisitionBehavior):
 
             if self._logger is not None:
                 self._logger.log_post_processor_run(f"After post processor: {type(behavior)}")
-  
+
+    def get_processed_frame_frame_as_jpg(self) -> bytes:
+
+        self._wait_for_next_frame()
+        self._get_frame()
+        self._run_post_processing_behaviors()
+
         ret, jpeg = cv2.imencode('.jpg', self._last_image)
         return jpeg.tobytes()
