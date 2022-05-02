@@ -8,9 +8,9 @@ classDiagram
 
   IImageAcquisitionBehavior <|-- ZwoAsiCamera
 
-  ZwoAsiCamera "1" --> "*" IPostProcessingBehavior
-  ZwoAsiCamera "1" --> "1" ZwoAsiCameraDataRepository
-  ZwoAsiCamera "1" --> "1" IImageAcquisitionBehaviorLogger
+  ZwoAsiCamera "1" --> "*" IPostProcessingBehavior : _automatically_run_post_processing_behaviors
+  ZwoAsiCamera "1" --> "1" ZwoAsiCameraDataRepository : _repository
+  ZwoAsiCamera "1" --> "1" IImageAcquisitionBehaviorLogger : _logger
 
 
   class IImageAcquisitionBehavior{
@@ -24,7 +24,6 @@ classDiagram
   }
 
   class ZwoAsiCameraDataRepository{
-    - _configuration:Dict~str,Any~
 
     + ZwoAsiCameraDataRepository(configuration:Dict~str,Any~)
 
@@ -45,10 +44,6 @@ classDiagram
   }
 
   class ZwoAsiCamera {
-    - _repository: ZwoAsiCameraDataRepository
-    - _automatically_run_post_processing_behaviors : List~IPostProcessingBehavior~
-    - _logger : IImageAcquisitionBehaviorLogger
-    - _last_image: cv2.Mat
 
     + ZwoAsiCamera(configuration:Dict~str,Any~, automatically_run_post_processing_behaviors : List~IPostProcessingBehavior~, logger: IImageAcquisitionBehaviorLogger)
 
@@ -71,7 +66,7 @@ classDiagram
 
   IImageAcquisitionBehavior <|-- ZwoAsiCamera
 
-  ZwoAsiCamera "1" --> "*" IPostProcessingBehavior
+  ZwoAsiCamera "1" --> "*" IPostProcessingBehavior : _automatically_run_post_processing_behaviors
 
   IPostProcessingBehavior <|-- SaveDark
   SaveDark "1" --> "1" LastImageAsFits : _storage_format
@@ -90,10 +85,6 @@ classDiagram
   }
 
   class ZwoAsiCamera {
-    - _repository: ZwoAsiCameraDataRepository
-    - _automatically_run_post_processing_behaviors : List~IPostProcessingBehavior~
-    - _logger : IImageAcquisitionBehaviorLogger
-    - _last_image: cv2.Mat
 
     + ZwoAsiCamera(configuration:Dict~str,Any~, automatically_run_post_processing_behaviors : List~IPostProcessingBehavior~, logger: IImageAcquisitionBehaviorLogger)
 
