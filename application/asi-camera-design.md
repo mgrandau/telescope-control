@@ -82,7 +82,7 @@ classDiagram
     - _automatically_run_post_processing_behaviors : List~IPostProcessingBehavior~
     - _logger : IImageAcquisitionBehaviorLogger
     - _last_image: cv2.Mat
-    
+
     + ZwoAsiCamera(configuration:Dict~str,Any~, automatically_run_post_processing_behaviors : List~IPostProcessingBehavior~, logger: IImageAcquisitionBehaviorLogger)
 
     + Dict< str, Any >  current_state()
@@ -195,23 +195,17 @@ sequenceDiagram
   App->>ZwoAsiCamera: ZwoAsiCamera(configuration:Dict<str,Any>, automatically_run_post_processing_behaviors : List<IPostProcessingBehavior>)
 
   loop get frames from camera
-    
     App->>ZwoAsiCamera: get_processed_frame_as_jpg()
+    ZwoAsiCamera->>ZwoAsiCamera: _wait_for_next_frame()
+    ZwoAsiCamera->>ZwoAsiCamera: _get_frame()
+    loop _run_post_processing_behaviors()
+      ZwoAsiCamera->>List_of_Automatically_Run_PostProcessingBehaviors: get next post processing behavior
 
-    alt if time to get new frame based on specified framerate
-      ZwoAsiCamera->>ZwoAsiCamera: acquire frame from ZWO ASI Camera API
-      loop through automatic post processing
-        ZwoAsiCamera->>List_of_Automatically_Run_PostProcessingBehaviors: get next post processing behavior
-
-        List_of_Automatically_Run_PostProcessingBehaviors-->>ZwoAsiCamera: return post processing behavior
+      List_of_Automatically_Run_PostProcessingBehaviors-->>ZwoAsiCamera: return post processing behavior
         
-        ZwoAsiCamera->>AutomaticPostProcessingBehavior: process_image(_last_image)
+      ZwoAsiCamera->>AutomaticPostProcessingBehavior: process_image(_last_image)
         
-        AutomaticPostProcessingBehavior-->>ZwoAsiCamera: update _last_image
-      end
-    else else
-      ZwoAsiCamera->>ZwoAsiCamera: sleep for remainder of time
+      AutomaticPostProcessingBehavior-->>ZwoAsiCamera: update _last_image
     end
-
   end
 ```
