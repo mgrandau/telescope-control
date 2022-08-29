@@ -1,12 +1,18 @@
 {
     "cSpell.words": [
+        "arcmin",
+        "arcseconds",
         "astropy",
         "Cython",
         "dobsonian",
         "imencode",
         "imread",
+        "ipynb",
         "Nema",
+        "pyasi",
         "pytz",
+        "Stellarium",
+        "Telrad",
         "tobytes"
     ],
     "dendron.rootDir": ".",
