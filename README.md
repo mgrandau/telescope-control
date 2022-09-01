@@ -21,6 +21,16 @@ I currently envision this as 2 heads-up displays.
 * Finder camera view - used for large motion to objects visible in the night sky.
 * Telescope imaging camera view - used for seeing through the the telescope remotely and acquiring images.
 
+## Running App
+
+The application is currently jupyterlabs based framework. This allows me to investigate and create commands in notebooks till I'm happy with the concepts. Then I can migrate them to code.
+
+To launch the server:
+
+``` bash
+nohup jupyter notebook --ip 192.168.0.30 &
+```
+
 ## Project
 
 ### Phase 1 - Basic remote control of the telescope
