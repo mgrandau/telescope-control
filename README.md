@@ -31,6 +31,9 @@ To launch the server:
 nohup jupyter notebook --ip 192.168.0.30 &
 ```
 
+Git project @
+https://github.com/mgrandau/telescope-control
+
 ## Project
 
 ### Phase 1 - Basic remote control of the telescope
