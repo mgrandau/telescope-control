@@ -17,17 +17,12 @@
 #
 #***************************************************************************************************************
 
-import numpy as np
-import scipy.misc
 import asi
 import cv2
 from typing import Optional, Dict
 
-class VideoCamera():
-    _video = None
-    _exposure = 3400 #2000000
-    _offset_cross = (-12,-8)
-    _gain = 0 #82
+class ASICamera():
+    _video: Optional[asi.Camera] = None
     last_image: Optional[bytes] = None
     
     _config : Dict[str, any] = { 
@@ -42,10 +37,12 @@ class VideoCamera():
     }
 
     def __init__(self, config : Dict[str, any]):
-        self._video = asi.Camera(1)
+        self._config = config
+
+        self._video = asi.Camera(self._config['Camera ID'])
         
         self._video.setCaptureFrameFormat( self._config['Width'], self._config['Height'], 1, self._config['Mode'] )
-        self._video.setControlValueManual( "ASI_GAIN", self._gain )
+        self._video.setControlValueManual( "ASI_GAIN", self._config['Gain'] )
         self._video.setControlValueManual( "ASI_WB_R", self._config['WhiteBalance_Red'] )
         self._video.setControlValueManual( "ASI_WB_B", self._config['WhiteBalance_Blue'] )
 
@@ -55,9 +52,7 @@ class VideoCamera():
     def get_frame(self) -> bytes:
         self.last_image, bin, success = self._video.grab(self._exposure)
         b,g,r = cv2.split(self.last_image)
-        corrected_image = cv2.merge ( (r, g, b) )
-
-        png = corrected_image[80-self._offset_cross[0]:880-self._offset_cross[0],240-self._offset_cross[1]:1040-self._offset_cross[1]]
+        self.last_image = cv2.merge ( (r, g, b) )
         
-        ret, jpeg = cv2.imencode('.jpg', png)
+        ret, jpeg = cv2.imencode('.jpg', self.last_image)
         return jpeg.tobytes()
