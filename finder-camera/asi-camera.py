@@ -50,7 +50,7 @@ class ASICamera():
         del self._video
 
     def get_frame(self) -> bytes:
-        self.last_image, bin, success = self._video.grab(self._exposure)
+        self.last_image, bin, success = self._video.grab(self._config['Exposure_Time_In_us'])
         b,g,r = cv2.split(self.last_image)
         self.last_image = cv2.merge ( (r, g, b) )
         
