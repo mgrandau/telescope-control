@@ -1,21 +1,19 @@
 #!/usr/bin/env python
 
-# import glob
 import os
 
-# import platform
-# import pprint
-# import sys
-# from distutils import sysconfig
 from distutils.core import setup
 from distutils.extension import Extension
 
 from Cython.Build import cythonize
 
+sdk = "ASI_linux_mac_SDK_V1.27"
+versionStr = "1.27.0"
+
 extraFlags = []
-extraIncludes = ["ASI_linux_mac_SDK_V1.20.3/include"]
+extraIncludes = [f"{sdk}/include"]
 extraDefines = []
-libDirs = ["ASI_linux_mac_SDK_V1.20.3/lib64"]
+libDirs = [f"{sdk}/lib64"]
 libraries = ["ASICamera2"]
 
 if "CC" in os.environ and os.environ["CC"].startswith("ccache"):
@@ -23,30 +21,10 @@ if "CC" in os.environ and os.environ["CC"].startswith("ccache"):
 if "CXX" in os.environ and os.environ["CXX"].startswith("ccache"):
     del os.environ["CXX"]
 
-# if "CONDA_BUILD" in os.environ or "CONDA_PREFIX" in os.environ:
-#     prefix = None
-#     if "PREFIX" in os.environ:
-#         prefix = os.environ["PREFIX"]
-#     elif "CONDA_PREFIX" in os.environ:
-#         prefix = os.environ["CONDA_PREFIX"]
-
-#     l = glob.glob(
-#         os.path.join(
-#             prefix, "lib", "python*", "site-packages", "numpy", "core", "include"
-#         )
-#     )
-#     if len(l) > 0:
-#         extraIncludes += [l[0]]
-#     l = glob.glob(
-#         os.path.join(prefix, "lib", "site-packages", "numpy", "core", "include")
-#     )
-#     if len(l) > 0:
-#         extraIncludes += [l[0]]
-
 extensions = [
     Extension(
         "asi",
-        ["pyasi/asi.pyx"],
+        [f"{os.path.dirname(os.path.abspath(__file__))}/pyasi/asi.pyx"],
         include_dirs=extraIncludes,
         libraries=libraries,
         library_dirs=libDirs,
@@ -55,8 +33,6 @@ extensions = [
         extra_compile_args=extraFlags,
     ),
 ]
-
-versionStr = "0.0.1"
 
 pyMods = []
 setup(
