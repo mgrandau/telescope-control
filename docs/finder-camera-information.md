@@ -18,7 +18,7 @@ I will position a sighting overlay with the appropriate offset based on the OTA 
 This approach of overlays may be useful in laying out custom markers. For example:
 
 * [Telrad Reflex Sight Finder](https://optcorp.com/products/telrad-finder-scope) equivalent circles for star hoping.
-* Arcs that fit various equatorial star Dec tracks. This may be useful in understanding the star motion to pre-plan observation.  
+* Arcs that fit various equatorial star Dec tracks. This may be useful in understanding the star motion to pre-plan observation.
 
 ## How is the camera mounted?
 

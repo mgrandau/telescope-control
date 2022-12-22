@@ -205,9 +205,9 @@ sequenceDiagram
       ZwoAsiCamera->>List_of_Automatically_Run_PostProcessingBehaviors: get next post processing behavior
 
       List_of_Automatically_Run_PostProcessingBehaviors-->>ZwoAsiCamera: return post processing behavior
-        
+
       ZwoAsiCamera->>AutomaticPostProcessingBehavior: process_image(_last_image)
-        
+
       AutomaticPostProcessingBehavior-->>ZwoAsiCamera: update _last_image
     end
   end
