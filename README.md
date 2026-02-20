@@ -59,3 +59,8 @@ As the project progresses I will identify the modules.
 * _finder_camera_ - Component that encapsulates functionality provided by the finder camera.
 * _server_service_ - web server that provides functionality for controlling the telescope.
 * _gui_ - GUI for controlling the telescope. Implemented as HTML, Javascript and CSS in a jupyter notebook)
+
+## 💬 Community
+
+💬 [Join the Discord community](https://discord.gg/2KqjHvh5)
+
